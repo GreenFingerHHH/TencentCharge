@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="TencentCharge:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/TencentCharge_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="TencentCharge" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib" />
+          <element id="library" level="project" name="ojdbc14" />
+          <element id="library" level="project" name="jstl-1.2" />
+          <element id="library" level="project" name="fastjson-1.2.62" />
+          <element id="library" level="project" name="json" />
+        </element>
+      </element>
+      <element id="library" level="project" name="jstl" />
+      <element id="javaee-facet-resources" facet="TencentCharge/web/Web" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tencet.dao.GameTypeDao">
+    <select id="selectGameTypeByCon" resultType="com.tencet.pojo.GameType">
+        select
+        *
+        from
+        (
+        select temp.*,rownum rn from
+        (select * from
+        T_GAME_TYPE
+        <where>
+            <if test="gameType neq null and gameType neq ''">
+                type_name like '%'||#{gameType}||'%'
+            </if>
+            <if test="status neq null and status neq ''">
+                and type_status = #{status}
+            </if>
+        </where>
+        ) temp
+
+        where rownum &lt;= ${pageNum * @com.tencet.constant.Constants@PAGESIZE}
+        )
+        where rn &gt; ${(pageNum-1) * @com.tencet.constant.Constants@PAGESIZE}
+
+    </select>
+
+    <select id="selectCountGameType" resultType="java.lang.Integer">
+        select
+        count (TYPE_ID)
+        from
+        T_GAME_TYPE
+        <where>
+            <if test="gameType neq null and gameType neq ''">
+                type_name like '%'||#{gameType}||'%'
+            </if>
+            <if test="status neq null and status neq ''">
+                and type_status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertGameType" >
+        insert into
+            T_GAME_TYPE
+        values
+            (#{typeId},#{typeName},#{typeStatus},#{newName},#{createTime},#{updateTime})
+    </insert>
+
+</mapper>

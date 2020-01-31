@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tencet.dao.CardDao">
+    <resultMap id="cardMap" type="com.tencet.pojo.Card">
+        <result column="prov_name" property="provName"></result>
+    </resultMap>
+    <select id="selectAllCards" resultType="com.tencet.pojo.Card">
+        select  T_CARD.*,prov_name
+            from T_CARD,T_PROVINCE
+                <where>
+                    <if test="cardNumber neq null and cardNumber neq ''">
+                        card_number = #{cardNumber}
+                    </if>
+                    <if test="cardCreateTime neq null and cardCreateTime neq ''">
+                        and card_createTime >= #{cardCreateTime}
+                    </if>
+                    <if test="cardEndTime neq null and cardEndTime neq ''">
+                        and card_endTime &lt; #{cardEndTime}
+                    </if>
+                    <if test="provId neq null and provId neq ''">
+                        and prov_id = #{provId}
+                    </if>
+                    and T_CARD.card_provId = T_PROVINCE.prov_id
+                </where>
+
+
+    </select>
+</mapper>

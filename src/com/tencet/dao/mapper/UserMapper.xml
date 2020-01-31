@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tencet.dao.UserDao">
+    <select id="selectAllUsers" resultType="com.tencet.pojo.User">
+        select
+         *
+         from
+         (
+         select temp.*,rownum rn from
+            (select * from
+                    T_USERS
+                <where>
+                     <if test="userAccount neq null and userAccount neq ''">
+                         user_name like '%'||#{userAccount}||'%'
+                     </if>
+                     <if test="userPhone neq null and userPhone neq ''">
+                        and user_phone = #{userPhone}
+                    </if>
+                 </where>
+                 ) temp
+
+         where rownum &lt;= ${pageNum * @com.tencet.constant.Constants@PAGESIZE}
+         )
+        where rn &gt; ${(pageNum-1) * @com.tencet.constant.Constants@PAGESIZE}
+
+    </select>
+
+    <select id="selectUsersCount" resultType="java.lang.Integer">
+        select
+         count (USER_ID)
+         from
+         T_USERS
+        <where>
+            <if test="userAccount neq null and userAccount neq ''">
+                user_name like '%'||#{userAccount}||'%'
+            </if>
+            <if test="userPhone neq null and userPhone neq ''">
+                and user_phone = #{userPhone}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateUserStatusByUserId">
+        update
+            T_USERS
+        set
+        USER_STATUS = #{status}
+        where
+        USER_ID in
+        <foreach collection="userId" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tencet.dao.GameDao">
+    <resultMap id="gameMap" type="com.tencet.pojo.Game">
+        <id property="gameId" column="game_id"></id>
+        <id property="gameName" column="game_name"></id>
+        <id property="gameType" column="TYPE_NAME"></id>
+        <id property="gameStatus" column="game_status"></id>
+        <id property="gameCover" column="game_cover"></id>
+        <id property="gameScreen" column="game_screen"></id>
+        <id property="gameCurrency" column="game_currency"></id>
+        <id property="gameTariffe" column="game_tariffe"></id>
+        <id property="gameDevelopers" column="game_developers"></id>
+        <id property="gameFiling" column="game_filing"></id>
+        <id property="gameDetail" column="game_detail"></id>
+        <id property="gameIntroduction" column="game_introduction"></id>
+        <id property="gameCreateTime" column="game_createTime"></id>
+        <id property="gameUpdateTime" column="game_updateTime"></id>
+    </resultMap>
+    <select id="selectGameByCon" resultMap="gameMap">
+        select
+        *
+        from
+        (
+        select temp.*,rownum rn from
+        (select T_GAME.*,TYPE_NAME from
+        T_GAME,T_GAME_TYPE
+        <where>
+            t_game.game_type = t_game_type.type_id
+            <if test="gameName neq null and gameName neq ''">
+              and  game_name like '%'||#{gameName}||'%'
+            </if>
+            <if test="gameType neq null and gameType neq ''">
+                and game_type = #{gameType}
+            </if>
+        </where>
+        ) temp
+
+        where rownum &lt;= ${pageNum * @com.tencet.constant.Constants@PAGESIZE}
+        )
+        where rn &gt; ${(pageNum-1) * @com.tencet.constant.Constants@PAGESIZE}
+
+    </select>
+
+    <select id="selectGameCount" resultType="java.lang.Integer">
+        select
+        count (game_id)
+        from
+        T_GAME
+        <where>
+            <if test="gameName neq null and gameName neq ''">
+                and  game_name like '%'||#{gameName}||'%'
+            </if>
+            <if test="gameType neq null and gameType neq ''">
+                and game_type = #{gameType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectGameById" resultMap="gameMap">
+        select
+            T_GAME.*,T_GAME_TYPE.TYPE_NAME
+        from T_GAME_TYPE,T_GAME
+        where T_GAME.GAME_TYPE = TYPE_ID
+            and GAME_ID = #{gameId}
+    </select>
+</mapper>
