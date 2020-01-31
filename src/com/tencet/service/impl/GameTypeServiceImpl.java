@@ -27,7 +27,7 @@ public class GameTypeServiceImpl implements GameTypeService {
     @Autowired
     private GameTypeIdCreater gameTypeIdCreater;
 
-    String baseFileUrl = "/Users/sunfish/Downloads/三阶段项目MY/TencentCharge/usedimg/gameType";
+    String baseFileUrl = Constants.uploadTypePath;
 
     @Override
     public Pager<GameType> getAllGameType(String gameType, Integer status, Integer pageNum) {

@@ -1,5 +1,6 @@
 package com.tencet.controller;
 
+import com.tencet.constant.Constants;
 import com.tencet.exception.GameNameHasExsistException;
 import com.tencet.pojo.Game;
 import com.tencet.pojo.GameType;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -100,14 +102,14 @@ public class GameController {
     }
 
     @RequestMapping("/downloadGame")
-    public void downloadGame(String gameId, String userId, HttpServletResponse response){
+    public void downloadGame(String gameId, String userId, HttpServletResponse response, HttpServletRequest request){
         System.out.println("进入后台！");
         String fileName = gameService.getOneGameById(gameId).getGameFile();
         System.out.println("游戏文件名:"+fileName);
         try {
             String filenameDisplay = URLEncoder.encode(fileName,"UTF-8");
             response.setHeader("Content-Disposition", "attachment;filename="+filenameDisplay);
-            String sourcePath = "/Users/sunfish/Downloads/三阶段项目MY/TencentCharge/FileSource";
+            String sourcePath = Constants.uploadGameSourcePath;
             ServletOutputStream servletOutputStream = null;
             servletOutputStream = response.getOutputStream();
             File file = new File(sourcePath,fileName);

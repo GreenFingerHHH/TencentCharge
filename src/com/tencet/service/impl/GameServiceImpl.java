@@ -22,11 +22,11 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private GameIdCreater creater;
 
-    String coverFileUrl = "/Users/sunfish/Downloads/三阶段项目MY/TencentCharge/usedimg/game";
+    String coverFileUrl = Constants.uploadCoverPath;
 
-    String screensFileUrl = "/Users/sunfish/Downloads/三阶段项目MY/TencentCharge/usedimg/game/screen";
+    String screensFileUrl = Constants.uploadScreensPath;
 
-    String gameFileUrl = "/Users/sunfish/Downloads/三阶段项目MY/TencentCharge/FileSource";
+    String gameFileUrl = Constants.uploadGameSourcePath;
     @Override
     public Pager<Game> getAllGame(String gameName, String gameType, Integer pageNum) {
         Pager<Game> pager = new Pager<Game>();
